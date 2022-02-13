@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, ListGroup, Form } from "react-bootstrap";
+import { Row, Col, ListGroup } from "react-bootstrap";
 import { Card, Image, Button } from "react-bootstrap";
 import { Message } from "../components";
 import { addToCart, removeFromCart } from "../actions/cartActions";
@@ -46,27 +46,25 @@ export function CartScreen() {
                   <Col md={3}>
                     <Image src={item.image} alt={item.title} fluid rounded />
                   </Col>
-                  <Col md={3}>
+                  <Col md={2}>
                     <Link to={`/product/${item.product}`}>{item.title}</Link>
                   </Col>
                   <Col md={2}>S/. {item.price}</Col>
-                  <Col md={3}>
-                    <Form.Control
-                      as="select"
+                  <Col md={2}>
+                    <input
+                      className="form-control"
                       value={item.qty}
+                      type="number"
+                      min="1"
+                      max={item.stock}
                       onChange={(e) =>
                         dispatch(
                           addToCart(item.product, Number(e.target.value))
                         )
                       }
-                    >
-                      {[...Array(item.stock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </Form.Control>
+                    />
                   </Col>
+                  <Col md={2}>S/. {(item.price * item.qty).toFixed(2)}</Col>
                   <Col md={1}>
                     <Button
                       type="button"
